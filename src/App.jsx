@@ -1,10 +1,10 @@
 import Map from 'components/Map';
+import Filter from 'components/Filter';
 
 const App = () => {
   return (
     <>
-      <h1>PH Earthquake Catalog</h1>
-      <p>coming soon...</p>
+      <Filter />
       <Map />
     </>
   );
