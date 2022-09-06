@@ -6,19 +6,18 @@ import styles from './styles.module.css';
 const Map = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng] = useState(121.774);
-  const [lat] = useState(12.879);
-  const [zoom] = useState(4.5);
+  const [lng] = useState(process.env.REACT_APP_DEFAULT_LNG);
+  const [lat] = useState(process.env.REACT_APP_DEFAULT_LAT);
+  const [zoom] = useState(process.env.REACT_APP_DEFAULT_ZOOM);
 
   useEffect(() => {
     if (map.current) return; //stops map from intializing more than once
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: 'https://demotiles.maplibre.org/style.json',
+      style: process.env.REACT_APP_MAP_STYLE,
       center: [lng, lat],
       zoom: zoom
     });
-    
   });
 
   return <div className={styles.container} ref={mapContainer} />;
