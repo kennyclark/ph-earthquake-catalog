@@ -1,11 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './styles.module.css';
 
 const Map = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const [isMapLoading, setIsMapLoading] = useState(true);
   const [lng] = useState(process.env.REACT_APP_DEFAULT_LNG);
   const [lat] = useState(process.env.REACT_APP_DEFAULT_LAT);
   const [zoom] = useState(process.env.REACT_APP_DEFAULT_ZOOM);
@@ -18,9 +21,16 @@ const Map = () => {
       center: [lng, lat],
       zoom: zoom
     });
+
+    map.current.on('load', () => {
+      setIsMapLoading(false);
+    })
   });
 
-  return <div className={styles.container} ref={mapContainer} />;
+  return <>
+    { isMapLoading && <div className={styles.loading}><CircularProgress /></div>}
+    <div className={styles.container} ref={mapContainer} />
+  </>;
 }
 
 export default Map;
