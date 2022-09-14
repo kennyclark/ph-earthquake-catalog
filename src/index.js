@@ -1,13 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { minutesToMilliseconds } from 'date-fns';
+import 'index.css';
+import App from 'App';
+import reportWebVitals from 'reportWebVitals';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: minutesToMilliseconds(30),
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
