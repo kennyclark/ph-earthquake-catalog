@@ -36,7 +36,7 @@ const Map = ({ earthquakes }) => {
     const source = map.current.getSource('earthquakes');
     if (!source) {
       map.current.addSource('earthquakes', earthquakes);
-    } else if (earthquakes.data.features.length) {
+    } else {
       source.setData(earthquakes.data);
     }
     const layer = map.current.getLayer('earthquakes');
