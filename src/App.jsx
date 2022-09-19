@@ -32,18 +32,14 @@ const App = () => {
 
   const { data } = useFetchEarthquakes(start, end);
   const earthquakes = useMemo(() => {
-    const filtered = data?.filter(
-      (d) =>
-        d.magnitude >= magnitudeRange[0] && d.magnitude <= magnitudeRange[1]
-    );
     return {
       type: 'geojson',
-      data: GeoJSON.parse(filtered?.length ? filtered : [], {
+      data: GeoJSON.parse(data?.length ? data : [], {
         Point: ['lat', 'lng'],
       }),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, magnitudeRange]);
+  }, [data]);
 
   return (
     <>
@@ -55,7 +51,7 @@ const App = () => {
         handleEndChange={handleEndChange}
         handleMagnitudeCommit={handleMagnitudeCommit}
       />
-      <Map earthquakes={earthquakes} />
+      <Map earthquakes={earthquakes} magnitudeRange={magnitudeRange} />
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
