@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 
 import { MAP_LAYER_EARTHQUAKE } from 'constants';
 
-const Map = ({ earthquakes }) => {
+const Map = ({ earthquakes, magnitudeRange }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [isMapLoading, setIsMapLoading] = useState(true);
@@ -43,7 +43,16 @@ const Map = ({ earthquakes }) => {
     if (!layer) {
       map.current.addLayer(MAP_LAYER_EARTHQUAKE, 'place_label_other');
     }
-  });
+  }, [earthquakes]);
+
+  useEffect(() => {
+    if (!map.current.loaded()) return;
+    map.current.setFilter('earthquakes', [
+      'all',
+      ['>=', ['get', 'magnitude'], magnitudeRange[0]],
+      ['<=', ['get', 'magnitude'], magnitudeRange[1]],
+    ]);
+  }, [magnitudeRange]);
 
   return (
     <>
