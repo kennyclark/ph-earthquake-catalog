@@ -30,7 +30,7 @@ const App = () => {
     setMagnitudeRange(newValue);
   };
 
-  const { data } = useFetchEarthquakes(start, end);
+  const { data, isLoading } = useFetchEarthquakes(start, end);
   const earthquakes = useMemo(() => {
     return {
       type: 'geojson',
@@ -51,7 +51,11 @@ const App = () => {
         handleEndChange={handleEndChange}
         handleMagnitudeCommit={handleMagnitudeCommit}
       />
-      <Map earthquakes={earthquakes} magnitudeRange={magnitudeRange} />
+      <Map
+        earthquakes={earthquakes}
+        isFetchingEarthquakes={isLoading}
+        magnitudeRange={magnitudeRange}
+      />
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
