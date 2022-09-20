@@ -8,13 +8,21 @@ import styles from './styles.module.css';
 
 import { MAP_LAYER_EARTHQUAKE } from 'constants';
 
-const Map = ({ earthquakes, magnitudeRange }) => {
+const Map = ({ earthquakes, isFetchingEarthquakes, magnitudeRange }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [isMapLoading, setIsMapLoading] = useState(true);
   const [lng] = useState(process.env.REACT_APP_DEFAULT_LNG);
   const [lat] = useState(process.env.REACT_APP_DEFAULT_LAT);
   const [zoom] = useState(process.env.REACT_APP_DEFAULT_ZOOM);
+
+  const applyFilters = (layerId) => {
+    map.current.setFilter(layerId, [
+      'all',
+      ['>=', ['get', 'magnitude'], magnitudeRange[0]],
+      ['<=', ['get', 'magnitude'], magnitudeRange[1]],
+    ]);
+  };
 
   useEffect(() => {
     if (map.current) return; //stops map from intializing more than once
@@ -25,10 +33,12 @@ const Map = ({ earthquakes, magnitudeRange }) => {
       zoom: zoom,
     });
 
-    map.current.on('load', () => {
-      setIsMapLoading(false);
+    map.current.on('sourcedata', (event) => {
+      const { sourceDataType, isSourceLoaded } = event;
+      if (!sourceDataType && isSourceLoaded && isMapLoading) {
+        setIsMapLoading(false);
+      }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -37,21 +47,20 @@ const Map = ({ earthquakes, magnitudeRange }) => {
     if (!source) {
       map.current.addSource('earthquakes', earthquakes);
     } else {
-      source.setData(earthquakes.data);
+      if (!isFetchingEarthquakes) {
+        setIsMapLoading(true);
+        source.setData(earthquakes.data);
+      }
     }
-    const layer = map.current.getLayer('earthquakes');
-    if (!layer) {
+    if (!map.current.getLayer('earthquakes')) {
       map.current.addLayer(MAP_LAYER_EARTHQUAKE, 'place_label_other');
+      applyFilters('earthquakes');
     }
   }, [earthquakes]);
 
   useEffect(() => {
-    if (!map.current.loaded()) return;
-    map.current.setFilter('earthquakes', [
-      'all',
-      ['>=', ['get', 'magnitude'], magnitudeRange[0]],
-      ['<=', ['get', 'magnitude'], magnitudeRange[1]],
-    ]);
+    if (!map.current.loaded() || !map.current.getLayer('earthquakes')) return;
+    applyFilters('earthquakes');
   }, [magnitudeRange]);
 
   return (
