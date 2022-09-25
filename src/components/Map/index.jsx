@@ -3,6 +3,8 @@ import maplibregl from 'maplibre-gl';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import LegendControl from 'components/custom/LegendControl';
+
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './styles.module.css';
 
@@ -31,6 +33,24 @@ const Map = ({ earthquakes, isFetchingEarthquakes, magnitudeRange }) => {
       style: process.env.REACT_APP_MAP_STYLE,
       center: [lng, lat],
       zoom: zoom,
+    });
+
+    map.current.addControl(
+      new maplibregl.NavigationControl({
+        showCompass: false,
+      })
+    );
+
+    map.current.addControl(new LegendControl(), 'bottom-right');
+
+    map.current.on('load', () => {
+      map.current.fitBounds(
+        new maplibregl.LngLatBounds(
+          new maplibregl.LngLat(115, 5),
+          new maplibregl.LngLat(130, 20)
+        ),
+        { padding: { left: 150 }, maxZoom: 10 }
+      );
     });
 
     map.current.on('sourcedata', (event) => {

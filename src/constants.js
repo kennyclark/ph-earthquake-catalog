@@ -3,6 +3,7 @@ export const MAP_LAYER_EARTHQUAKE = {
   type: 'circle',
   source: 'earthquakes',
   paint: {
+    'circle-blur': 0.5,
     'circle-color': [
       'step',
       ['get', 'magnitude'],

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { subWeeks, isBefore, isAfter, startOfDay, endOfDay } from 'date-fns';
 import GeoJSON from 'geojson';
+import { Sidebar } from 'Layout';
 import Map from 'components/Map';
 import Filter from 'components/Filter';
 import { useFetchEarthquakes } from 'api/earthquake';
@@ -38,25 +38,25 @@ const App = () => {
         Point: ['lat', 'lng'],
       }),
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
     <>
-      <Filter
-        start={start}
-        end={end}
-        initialMagnitudeRange={magnitudeRange}
-        handleStartChange={handleStartChange}
-        handleEndChange={handleEndChange}
-        handleMagnitudeCommit={handleMagnitudeCommit}
-      />
+      <Sidebar>
+        <Filter
+          start={start}
+          end={end}
+          initialMagnitudeRange={magnitudeRange}
+          handleStartChange={handleStartChange}
+          handleEndChange={handleEndChange}
+          handleMagnitudeCommit={handleMagnitudeCommit}
+        />
+      </Sidebar>
       <Map
         earthquakes={earthquakes}
         isFetchingEarthquakes={isLoading}
         magnitudeRange={magnitudeRange}
       />
-      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };

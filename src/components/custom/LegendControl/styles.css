@@ -1,0 +1,46 @@
+
+
+.maplibregl-ctrl-legend {
+  padding: 10px;
+  margin: 0px 0px 12px;
+  border-radius: 16px;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: background 500ms ease-in-out !important;
+}
+
+.maplibregl-ctrl-legend:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.maplibregl-ctrl-legend > h3 {
+  color: inherit;
+  margin: 0px;
+}
+
+.maplibregl-ctrl-legend > table {
+  width: 100%;
+}
+
+.maplibregl-ctrl-legend > table th,
+td {
+  text-align: left;
+  vertical-align: middle;
+}
+
+.maplibregl-ctrl-legend > table th:first-child,
+td:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.maplibregl-ctrl-legend > table td:first-child > span {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
