@@ -10,15 +10,23 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "logo144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://ph-earthquake-catalog.vercel.app",
   "display": "fullscreen",
   "theme_color": "#000000",
   "background_color": "#ffffff"

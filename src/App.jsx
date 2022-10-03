@@ -1,7 +1,6 @@
-import { useState, useMemo } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useState } from 'react';
 import { subWeeks, isBefore, isAfter, startOfDay, endOfDay } from 'date-fns';
-import GeoJSON from 'geojson';
+import { Sidebar } from 'Layout';
 import Map from 'components/Map';
 import Filter from 'components/Filter';
 import { useFetchEarthquakes } from 'api/earthquake';
@@ -30,33 +29,26 @@ const App = () => {
     setMagnitudeRange(newValue);
   };
 
-  const { data, isLoading } = useFetchEarthquakes(start, end);
-  const earthquakes = useMemo(() => {
-    return {
-      type: 'geojson',
-      data: GeoJSON.parse(data?.length ? data : [], {
-        Point: ['lat', 'lng'],
-      }),
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  const { data: earthquakes, isLoading } = useFetchEarthquakes(start, end);
 
   return (
     <>
-      <Filter
-        start={start}
-        end={end}
-        initialMagnitudeRange={magnitudeRange}
-        handleStartChange={handleStartChange}
-        handleEndChange={handleEndChange}
-        handleMagnitudeCommit={handleMagnitudeCommit}
-      />
+      <Sidebar>
+        <Filter
+          start={start}
+          end={end}
+          initialMagnitudeRange={magnitudeRange}
+          handleStartChange={handleStartChange}
+          handleEndChange={handleEndChange}
+          handleMagnitudeCommit={handleMagnitudeCommit}
+        />
+      </Sidebar>
       <Map
         earthquakes={earthquakes}
         isFetchingEarthquakes={isLoading}
+        dateRange={{ start, end }}
         magnitudeRange={magnitudeRange}
       />
-      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };
