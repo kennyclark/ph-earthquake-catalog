@@ -100,8 +100,9 @@ const Map = (props) => {
 
     if (!map.current.getLayer('earthquakes')) {
       map.current.addLayer(MAP_LAYER_EARTHQUAKE, 'place_label_other');
-      applyFilters('earthquakes');
     }
+
+    applyFilters('earthquakes');
   }, [earthquakesGeoJSON, isFetchingEarthquakes, applyFilters]);
 
   useEffect(() => {
