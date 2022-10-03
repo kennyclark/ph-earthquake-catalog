@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { subWeeks, isBefore, isAfter, startOfDay, endOfDay } from 'date-fns';
-import GeoJSON from 'geojson';
 import { Sidebar } from 'Layout';
 import Map from 'components/Map';
 import Filter from 'components/Filter';
@@ -30,15 +29,7 @@ const App = () => {
     setMagnitudeRange(newValue);
   };
 
-  const { data, isLoading } = useFetchEarthquakes(start, end);
-  const earthquakes = useMemo(() => {
-    return {
-      type: 'geojson',
-      data: GeoJSON.parse(data?.length ? data : [], {
-        Point: ['lat', 'lng'],
-      }),
-    };
-  }, [data]);
+  const { data: earthquakes, isLoading } = useFetchEarthquakes(start, end);
 
   return (
     <>
@@ -55,6 +46,7 @@ const App = () => {
       <Map
         earthquakes={earthquakes}
         isFetchingEarthquakes={isLoading}
+        dateRange={{ start, end }}
         magnitudeRange={magnitudeRange}
       />
     </>
