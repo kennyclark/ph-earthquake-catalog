@@ -14,7 +14,7 @@ function LegendControl() {
         </tr>
         <tr>
           <td><span style="background-color: #147DF5;"></span></td>
-          <td style="color: #147DF5;">2.5 or less</td>
+          <td style="color: #147DF5;">2.4 or less</td>
         </tr>
         <tr>
           <td><span style="background-color: #FFEA00;"></span></td>
